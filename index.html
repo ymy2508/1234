@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+	<script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$.ajax({
+            url:"http://localhost:3000/item/list",
+            type:'post',
+            dataType:'json',
+            success:function(e){
+            	for(var i in e){
+            		$('body').append('<p>'+e[i].name+'<span data-id='+e[i].id+'>×</span></p>')
+            	}
+            	$('span').click(function(){
+            		var id=$(this).attr('data-id')
+            		var _this=$(this)
+            		$.ajax({
+                        url:"http://localhost:3000/item/delete",
+                        type:"POST",
+                        data:{id:id},
+                        success:function(e){
+                            _this.parent().remove()
+                        }
+                    })
+            	})
+            	
+            }
+        })
+  
+       $('#but').click(function(){
+       	var val=$('#inp').val();
+       	if(val!==''){
+       		$.ajax({
+            url:"http://localhost:3000/item/insert",
+            type:'post',
+            dataType:'json',
+            data:{name:val},
+            success:function(e){
+            	console.log(e)
+            }
+        })
+       	}
+       })
+		})
+	</script>
+</head>
+<body>
+<input type="text"/ id="inp"> 
+<button id="but">提交</button>
+</body>
+</html>
